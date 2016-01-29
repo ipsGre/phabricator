@@ -71,6 +71,9 @@ final class DifferentialChangesetTwoUpRenderer
 
     $hidden = new PHUIDiffRevealIconView();
 
+    /* Init extension */
+    $line_renderer = new DifferentialLineNumberRendered($changeset->getDisplayFilename(), $range_start, $range_len);
+
     for ($ii = $range_start; $ii < $range_start + $range_len; $ii++) {
       if (empty($mask[$ii])) {
         // If we aren't going to show this line, we've just entered a gap.
@@ -305,10 +308,13 @@ final class DifferentialChangesetTwoUpRenderer
       // clipboard. See the 'phabricator-oncopy' behavior.
       $zero_space = "\xE2\x80\x8B";
 
+      $line_num_rendered_o = $line_renderer->getLineTag($o_num);
+      $line_num_rendered_n = $line_renderer->getLineTag($n_num);
+
       $html[] = phutil_tag('tr', array(), array(
-        phutil_tag('th', array('id' => $o_id), $o_num),
+        phutil_tag('th', array('id' => $o_id), $line_num_rendered_o),
         phutil_tag('td', array('class' => $o_classes), $o_text),
-        phutil_tag('th', array('id' => $n_id), $n_num),
+        phutil_tag('th', array('id' => $n_id), $line_num_rendered_n),
         $n_copy,
         phutil_tag(
           'td',

@@ -82,8 +82,14 @@ final class PHUIDiffTableOfContentsItemView extends AphrontView {
     $cells[] = $this->getContext();
 
     $cells[] = $this->renderPathChangeCharacter();
+
     $cells[] = $this->renderPropertyChangeCharacter();
     $cells[] = $this->renderPropertyChangeDescription();
+
+    $path = $this->getChangeset()->getDisplayFilename();
+    $line_renderer = new DifferentialLineNumberRendered($path, 0, 0);
+    $cells[] = $line_renderer->getInfoTag();
+
 
     $link = $this->renderChangesetLink();
     $lines = $this->renderChangesetLines();
